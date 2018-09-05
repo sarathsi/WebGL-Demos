@@ -1,0 +1,79 @@
+<html>
+
+<head>
+    <title>three.js app</title>
+    <style>
+        body {
+            margin: 0;
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%
+        }
+    </style>
+</head>
+
+<body>
+    <script src="js/three.js"></script>
+    <script>
+
+        function triangleGeometry() {
+            // vertices
+            var triangle = new THREE.Geometry();
+            triangle.vertices.push(new THREE.Vector3(0, 0, 0));
+            triangle.vertices.push(new THREE.Vector3(3, 0, 0));
+            triangle.vertices.push(new THREE.Vector3(3, 3, 0));
+            // face
+            triangle.faces.push(new THREE.Face3(0, 1, 2));
+            return triangle;
+        }
+
+        function drawSquare(x1, y1, x2, y2) {
+            var square = new THREE.Geometry();
+            square.vertices.push(new THREE.Vector3(x1, y1, 0));
+            square.vertices.push(new THREE.Vector3(x2, y1, +3)); // -ve z: far
+            square.vertices.push(new THREE.Vector3(x2, y2, -3)); // +ve z: near
+            square.vertices.push(new THREE.Vector3(x1, y2, 0));
+
+            square.faces.push(new THREE.Face3(0, 1, 2));
+            square.faces.push(new THREE.Face3(0, 3, 2));
+
+            // Since the 60th revision of THREE.js, Face4 function has been removed.
+            //square.faces.push(new THREE.Face4(0, 1, 2, 3));
+
+            return square;
+        }
+
+        var scene = new THREE.Scene();
+        var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+        var renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        var triangleGeo = triangleGeometry();
+        var material = new THREE.MeshBasicMaterial({
+            color: 0x2685AA,
+            side: THREE.DoubleSide // FrontSide BackSide DoubleSide
+        });
+
+        var triangleMesh = new THREE.Mesh(triangleGeo, material);
+        //scene.add(triangleMesh);
+
+        var squareGeo = drawSquare(0, 0, 3, 3);
+        var squareMesh = new THREE.Mesh(squareGeo, material);
+        scene.add(squareMesh);
+
+        camera.position.z = 10;
+
+        var animate = function () {
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+        };
+
+        animate();
+    </script>
+</body>
+
+</html>
