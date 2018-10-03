@@ -51,7 +51,7 @@
 		renderer.render(scene, camera);
 
 		var animate = function () {
-			requestAnimationFrame(animate);
+			//requestAnimationFrame(animate);
 			render();
 			// actually display the scene in the Dom element
 			renderer.render(scene, camera);
@@ -62,9 +62,14 @@
 			//cube.rotation.y += 0.01;
 
 			// animate the cube
-			cube.rotation.x += 0.02;
-			cube.rotation.y += 0.0225;
-			cube.rotation.z += 0.0175;
+			//cube.rotation.x += 0.02;
+			//cube.rotation.y += 0.0225;
+			//cube.rotation.z += 0.0175;
+
+			cube.rotation.x += 0.9;
+			cube.rotation.y += 0.7;
+			cube.rotation.z += 1.2;
+
 			// make the cube bounce
 			var dtime = Date.now() - startTime;
 			cube.scale.x = 1.0 + 0.3 * Math.sin(dtime / 300);
@@ -74,11 +79,12 @@
 
 		//animate();
 
-
 		window.addEventListener("message", receiveMessage, false);
 
 		function receiveMessage(event) {
 			console.log('webgl_cube1.html receiveMessage() event: %o', event);
+			animate();
+			/*
                         if (isAnimating == false) {
 			  isAnimating = true;
                           animate();
@@ -86,7 +92,7 @@
 			else {
 			  isAnimating = false;
 			  cancelAnimationFrame(animate);
-			}
+			}*/
 		}
 
 	</script>
