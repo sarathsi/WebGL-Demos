@@ -44,6 +44,11 @@
 
 		camera.position.z = 2;
 
+		cube.rotation.x += 0.9;
+		cube.rotation.y += 0.7;
+		cube.rotation.z += 1.2;
+		renderer.render(scene, camera);
+
 		var animate = function () {
 			requestAnimationFrame(animate);
 			render();
@@ -66,7 +71,16 @@
 			cube.scale.z = 1.0 + 0.3 * Math.sin(dtime / 300);
 		}
 
-		animate();
+		//animate();
+
+
+		window.addEventListener("message", receiveMessage, false);
+
+		function receiveMessage(event) {
+			console.log('webgl_cube1.html receiveMessage() event: %o', event);
+                        animate();
+		}
+
 	</script>
 
 
