@@ -19,7 +19,7 @@
 	<script src="./third_party/three.js/stats.js"></script>
 
 	<script>
-                var isAnimating = false;
+		var isAnimating = false;
 		var startTime = Date.now();
 		var scene = new THREE.Scene();
 		var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -84,15 +84,6 @@
 		function receiveMessage(event) {
 			console.log('webgl_cube1.html receiveMessage() event: %o', event);
 			animate();
-			/*
-                        if (isAnimating == false) {
-			  isAnimating = true;
-                          animate();
-			}
-			else {
-			  isAnimating = false;
-			  cancelAnimationFrame(animate);
-			}*/
 		}
 
 	</script>
@@ -117,6 +108,13 @@
 				resizeIFrameToFitContent(iframes[i]);
 			}
 		});
+
+		onmessage = function (e) {
+			console.log('Message received from main script');
+			var workerResult = 'Result: ' + (e.data[0] * e.data[1]);
+			console.log('Posting message back to main script');
+			postMessage(workerResult);
+		}
 
 	</script>
 
