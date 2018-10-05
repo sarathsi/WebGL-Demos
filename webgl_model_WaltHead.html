@@ -36,7 +36,7 @@
 
 	<script>
 
-		var camera, scene, renderer, object, stats, light;
+		var camera, scene, renderer, object, stats, light_default, light_new;
 		var clock = new THREE.Clock();
 		var lightOn = false;
 		init();
@@ -59,9 +59,13 @@
 			});
 
 			var sphere = new THREE.SphereBufferGeometry(0.5, 16, 8);
-			light = new THREE.AmbientLight(0x223322);
-			light.add(new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color: 0x223322 })));
-			scene.add(light);
+			light_default = new THREE.AmbientLight(0x223322);
+			light_default.add(new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color: 0x223322 })));
+			scene.add(light_default);
+
+			light_update = new THREE.AmbientLight(0x228822);
+			light_update.add(new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color: 0x228822 })));
+
 
 			//renderer
 			renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -101,11 +105,11 @@
 			console.log('onReceiveMessage() event: %o ', event, ', lightOn: ', lightOn);
 			//animate();
 			if (lightOn == true) {
-				scene.remove(light);
+				scene.remove(light_update);
 				lightOn = false;
 			}
 			else {
-				scene.add(light);
+				scene.add(light_update);
 				lightOn = true;
 			}
 		}
