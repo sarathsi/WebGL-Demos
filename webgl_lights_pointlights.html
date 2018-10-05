@@ -30,6 +30,7 @@
 </head>
 
 <body>
+        <script src="./third_party/jquery/jquery-3.3.1.min.js"></script>
 	<script src="./third_party/three.js/three.js"></script>
 	<script src="./third_party/three.js/CSS3DRenderer.js"></script>
 	<script src="./third_party/three.js/stats.js"></script>
@@ -37,7 +38,7 @@
 
 	<script>
 
-		var camera, scene, cssScene, renderer, cssRenderer,
+		var camera, scene, cssScene, renderer, cssRenderer, cssObject,
 			light1, light2, light3, light4,
 			object, object2, stats;
 
@@ -52,10 +53,9 @@
 			camera.position.z = 100;
 
 			scene = new THREE.Scene();
-                        cssScene = new THREE.Scene();
+			cssScene = new THREE.Scene();
 
 			//model
-
 			var loader = new THREE.OBJLoader();
 			loader.load('models/obj/walt/WaltHead.obj', function (obj) {
 
@@ -74,26 +74,25 @@
 			var sphere = new THREE.SphereBufferGeometry(0.5, 16, 8);
 
 			//lights
-
-			var light = new THREE.AmbientLight(0x224466);
-			light.add(new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color: 0x224466 })));
+			var light = new THREE.AmbientLight(0x228822);
+			light.add(new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color: 0x228822 })));
 			scene.add(light);
 
 			light1 = new THREE.PointLight(0xff0040, 2, 50);
 			light1.add(new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color: 0xff0040 })));
-			scene.add(light1);
+			//scene.add(light1);
 
 			light2 = new THREE.PointLight(0x0040ff, 2, 50);
 			light2.add(new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color: 0x0040ff })));
-			scene.add(light2);
+			//scene.add(light2);
 
 			light3 = new THREE.PointLight(0x80ff80, 2, 50);
 			light3.add(new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color: 0x80ff80 })));
-			scene.add(light3);
+			//scene.add(light3);
 
 			light4 = new THREE.PointLight(0xffaa00, 2, 50);
 			light4.add(new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color: 0xffaa00 })));
-			scene.add(light4);
+			//scene.add(light4);
 
 			//renderer
 
@@ -103,24 +102,61 @@
 			document.body.appendChild(renderer.domElement);
 
 			cssRenderer = createCssRenderer();
+			document.body.appendChild(cssRenderer.domElement);
+			//cssRenderer.domElement.appendChild(renderer.domElement);
+
+			cssObject = createCSSObject(300, 300, 
+					new THREE.Vector3(0, 0, -50),
+					new THREE.Vector3(0, 0, 0),
+					"https://rawgit.com/sarathsi/WebGL-Demos/master/webgl_model_WaltHead.html"
+					//"https://rawgit.com/sarathsi/WebGL-Demos/master/webgl_cube1.html"
+					);
+			cssObject.matrixAutoUpdate = true;
+			cssScene.add(cssObject);
 
 			//stats
-
 			stats = new Stats();
 			document.body.appendChild(stats.dom);
 
 			window.addEventListener('resize', onWindowResize, false);
-
 		}
+
 
 		function createCssRenderer() {
 			console.log('createCssRenderer()');
 			var cssRenderer = new THREE.CSS3DRenderer();
 			cssRenderer.domElement.style.position = 'absolute';
 			cssRenderer.domElement.style.top = 0;
-			cssRenderer.domElement.style.zIndex = 1;
+			cssRenderer.domElement.style.zIndex = 50;
 			cssRenderer.domElement.style['pointer-events'] = 'none';
+			cssRenderer.setSize(300, 300);
 			return cssRenderer;
+		}
+
+		function createCSSObject(w, h, position, rotation, url) {
+			var html = [
+				'<div style="width:' + w + 'px; height:' + h + 'px;">',
+				'<iframe id="iframe1" frameborder="1" src="' + url + '" width="' + w + '" height="' + h + '" scrolling="' + '"yes"' + '">',
+				'</iframe>',
+				'</div>'
+			].join('\n');
+			var div = document.createElement('div');
+			div.style.backgroundColor = "#FFFF00";
+			$(div).html(html);
+			var cssObject = new THREE.CSS3DObject(div);
+			div.parent = cssObject;
+
+			cssObject.name = url; // Important
+			cssObject.position.x = position.x;
+			cssObject.position.y = position.y;
+			cssObject.position.z = position.z;
+			cssObject.rotation.x = rotation.x;
+			cssObject.rotation.y = rotation.y;
+			cssObject.rotation.z = rotation.z;
+			//const SCALE_FACTOR = 0.5;
+			//cssObject.scale.set(SCALE_FACTOR, SCALE_FACTOR, SCALE_FACTOR);
+
+			return cssObject;
 		}
 
 		function onWindowResize() {
@@ -166,7 +202,7 @@
 			light4.position.z = Math.sin(time * 0.5) * 30;
 
 			renderer.render(scene, camera);
-                        cssRenderer.render(cssScene, camera);
+			cssRenderer.render(cssScene, camera);
 
 		}
 

@@ -36,9 +36,10 @@
 
 	<script>
 
-		var camera, scene, renderer, object, stats;
+		var camera, scene, renderer, object, stats, light;
 		var clock = new THREE.Clock();
 
+		window.addEventListener("message", receiveMessage, false);
 		init();
 		animate();
 
@@ -59,9 +60,9 @@
 			});
 
 			var sphere = new THREE.SphereBufferGeometry(0.5, 16, 8);
-			var light = new THREE.AmbientLight(0x228866);
-			light.add(new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color: 0x228866 })));
-			scene.add(light);
+			light = new THREE.AmbientLight(0x228822);
+			light.add(new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color: 0x228822 })));
+			//scene.add(light);
 
 			//renderer
 			renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -77,12 +78,9 @@
 		}
 
 		function onWindowResize() {
-
 			camera.aspect = window.innerWidth / window.innerHeight;
 			camera.updateProjectionMatrix();
-
 			renderer.setSize(window.innerWidth, window.innerHeight);
-
 		}
 
 		function animate() {
@@ -97,6 +95,13 @@
 			if (object) object.rotation.y -= 0.7 * delta;
 			renderer.render(scene, camera);
 		}
+
+
+		function receiveMessage(event) {
+			console.log('webgl_cube1.html receiveMessage() event: %o', event);
+			animate();
+		}
+
 
 	</script>
 </body>
