@@ -39,7 +39,6 @@
 		var camera, scene, renderer, object, stats, light;
 		var clock = new THREE.Clock();
 
-		window.addEventListener("message", receiveMessage, false);
 		init();
 		animate();
 
@@ -60,7 +59,7 @@
 			});
 
 			var sphere = new THREE.SphereBufferGeometry(0.5, 16, 8);
-			light = new THREE.AmbientLight(0x228822);
+			light = new THREE.AmbientLight(0x223322);
 			light.add(new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color: 0x228822 })));
 			//scene.add(light);
 
@@ -75,6 +74,7 @@
 			document.body.appendChild(stats.dom);
 
 			window.addEventListener('resize', onWindowResize, false);
+			window.addEventListener('message', onReceiveMessage, false);
 		}
 
 		function onWindowResize() {
@@ -97,9 +97,10 @@
 		}
 
 
-		function receiveMessage(event) {
-			console.log('webgl_cube1.html receiveMessage() event: %o', event);
-			animate();
+		function onReceiveMessage(event) {
+			console.log('onReceiveMessage() event: %o', event);
+			//animate();
+			scene.add(light);
 		}
 
 

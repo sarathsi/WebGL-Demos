@@ -119,6 +119,7 @@
 			document.body.appendChild(stats.dom);
 
 			window.addEventListener('resize', onWindowResize, false);
+			window.addEventListener('click', onClick);
 		}
 
 
@@ -163,15 +164,17 @@
 
 			camera.aspect = window.innerWidth / window.innerHeight;
 			camera.updateProjectionMatrix();
-
 			renderer.setSize(window.innerWidth, window.innerHeight);
+		}
 
+		function onClick() {
+        		console.log('iframeWin.postMessage()');
+      			var iframeWin = document.getElementById("iframe1").contentWindow;
+		        iframeWin.postMessage("light", "https://rawgit.com");
 		}
 
 		function animate() {
-
 			requestAnimationFrame(animate);
-
 			render();
 			stats.update();
 
